@@ -1,5 +1,8 @@
 package c_minimax;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 //author: Gary Kalmanovich; rights reserved
 
 public class TicTacToeStrategy implements InterfaceStrategy {
@@ -15,8 +18,15 @@ public class TicTacToeStrategy implements InterfaceStrategy {
                 posNew.setColor(iPos, player);
                 int isWin = posNew.isWinner();
                 float score = 0;
-                // TODO Based on isWin, come up with a score or what to do to get the score
-
+                if (isWin == player) {
+                	score = 1;
+                } else if (isWin > 0) {
+                	score = -1;
+                } else if (isWin == 0) {
+                	score = 0;
+                } else {
+                	score = this.minimax(posNew, player);
+                }
                 if (context.getBestScoreSoFar() <  score ) {
                     context.setBestMoveSoFar(iPos, score );
                 }
@@ -24,7 +34,37 @@ public class TicTacToeStrategy implements InterfaceStrategy {
         }
     }
 
-    @Override
+    private float minimax(InterfacePosition position, int player) {
+    	int multiplier = -1;
+    	if (player == 1) {
+    		multiplier = 1;
+    	}
+    	int opponent = 3-player;
+    	int isWin = position.isWinner();
+    	if (isWin == player) {
+    		return 1*multiplier;
+    	} else if (isWin == opponent) {
+    		return -1*multiplier;
+    	} else if (isWin == 0) {
+    		return 0;
+    	} else {
+    		ArrayList<Float> possibleScores = new ArrayList<Float>();
+    		for ( InterfaceIterator iPos = new TicTacToeIterator(); iPos.isInBounds(); iPos.increment() ) {
+                InterfacePosition posNew = new TicTacToePosition(position);
+                if (posNew.getColor(iPos) == 0) { // This is a free spot
+                	posNew.setColor(iPos, opponent);
+                	possibleScores.add(minimax(posNew, opponent));
+                }
+            }
+    		if (player == 1) {
+    			return Collections.min(possibleScores);
+    		} else {
+    			return Collections.max(possibleScores);
+    		}
+    	}
+	}
+
+	@Override
     public void setContext(InterfaceSearchInfo strategyContext) {
         // Not used in this strategy
     }

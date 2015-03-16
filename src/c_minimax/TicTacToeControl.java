@@ -52,8 +52,8 @@ public class TicTacToeControl implements InterfaceControl{
         InterfacePosition position = computePosition();
         long startTime = System.nanoTime(); // Start the total timing
         if (getGame().getCurrentPlayer() == Square.State.CROSS) {
+            position.setPlayer(1);
             if (xStrategy != null) {
-                position.setPlayer(1);
                 InterfaceSearchInfo context = new TicTacToeSearchInfo();
                 xStrategy.getBestMove(position, context);
                 int iR = context.getBestMoveSoFar().iR();
@@ -63,8 +63,8 @@ public class TicTacToeControl implements InterfaceControl{
             }
         }
         if (getGame().getCurrentPlayer() == Square.State.NOUGHT) {
+            position.setPlayer(2);
             if (oStrategy != null) {
-                position.setPlayer(2);
                 InterfaceSearchInfo context = new TicTacToeSearchInfo();
                 oStrategy.getBestMove(position, context);
                 int iR = context.getBestMoveSoFar().iR();
