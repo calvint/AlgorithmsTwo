@@ -5,13 +5,28 @@ package connect4MinimaxIndividual4x4;
 public class Connect4Strategy implements InterfaceStrategy {
     @Override
     public void getBestMove(InterfacePosition position, InterfaceSearchInfo context) {
-        // Note, return information is embedded in context
-
         int player   = position.getPlayer();
         int opponent = 3-player; // There are two players, 1 and 2.
-        
-        //TODO Implement strategy. Note, this is not that different from TicTacToeStrategy that is now visible.
-        // Nonetheless, if you want to be efficient, you may want to make it somewhat different.
+        for ( InterfaceIterator iPos = new Connect4Iterator(4, 4); iPos.isInBounds(); iPos.increment() ) {
+            InterfacePosition posNew = new Connect4Position(position);
+            if (posNew.getColor(iPos) == 0) { // This is a free spot
+                posNew.setColor(iPos, player);
+                int isWin = posNew.isWinner();
+                float score;
+                if        ( isWin ==   player ) { score =  1f;  // Win
+                } else if ( isWin ==        0 ) { score =  0f;  // Draw
+                } else if ( isWin == opponent ) { score = -1f;  // Loss
+                } else { // Game is not over, so check further down the game
+                    posNew.setPlayer(opponent);
+                    InterfaceSearchInfo opponentContext = new Connect4SearchInfo();
+                    getBestMove(posNew, opponentContext);
+                    score = -opponentContext.getBestScoreSoFar();
+                }
+                if (context.getBestScoreSoFar() <  score ) {
+                    context.setBestMoveSoFar(iPos, score );
+                }
+            }
+        }
     }
 
     @Override

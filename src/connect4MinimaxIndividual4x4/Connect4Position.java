@@ -33,11 +33,11 @@ public class Connect4Position implements InterfacePosition {
     }
     
     private int getColumnChipCount( int iC ) { // Number of chips in column iC
-        //TODO fill this in based on:
+        // fill this in based on:
         // Rightmost 21=3*7 bits are for storing column sizes. (3 bits accommodates 0..7)
         // Next, going to the left 42=6*7*1 bits are binary for colors. (Either red or yellow) 
         // Finally, the left most bit is for the player
-        return 0/0;
+    	return (int) (position & (5L << 3*iC) >>> (3*iC));
     }
     
     @Override public int nC() { return nC; }
@@ -55,11 +55,19 @@ public class Connect4Position implements InterfacePosition {
     }
 
     private int getColor( int iC, int iR_, int nColumnChipCount ) { // 0 if transparent, 1 if red, 2 if yellow
-        //TODO fill this in based on:
+        // fill this in based on:
         // Rightmost 21=3*7 bits are for storing column sizes. (3 bits accommodates 0..7)
         // Next, going to the left 42=6*7*1 bits are binary for colors. (Either red or yellow) 
         // Finally, the left most bit is for the player
-        return 0/0;
+    	if (iR_ > nColumnChipCount) {
+    		return 0;
+    	} else {
+	    	int posShift = 21;
+	    	for (int i = 0; i <= iC; i++) {
+	    		posShift += getColumnChipCount(i);
+	    	}
+	        return (int) ((position & (1L << posShift)) >>> posShift) + 1;
+    	}
     }
 
     @Override
@@ -74,11 +82,25 @@ public class Connect4Position implements InterfacePosition {
         } else {
             // Increment columnSize
             // Set the color (default is color==1)
-
+        	
             //TODO fill this in based on:
             // Rightmost 21=3*7 bits are for storing column sizes. (3 bits accommodates 0..7)
             // Next, going to the left 42=6*7*1 bits are binary for colors. (Either red or yellow) 
             // Finally, the left most bit is for the player
+        	int count = getColumnChipCount(iPos);
+        	//zero column bits
+        	position &= ~(7 << (3*iC));
+        	//set new count for that column
+        	position &= (count << (3*iC));
+        	//change color slot to correct color
+        	if (color == 2) {
+        		int posShift = 21;
+    	    	for (int i = 0; i <= iC; i++) {
+    	    		posShift += getColumnChipCount(i);
+    	    	}
+    	    	position |= (1 << posShift);
+        	}
+        	
         }
     }
 
@@ -89,7 +111,48 @@ public class Connect4Position implements InterfacePosition {
         //      else if neither winner nor draw, return -1
 
         //TODO implement this one for the individual assignment
-        return 0/0;
+    	//check verticals for win
+    	//for each column
+    	for (int columnIndex =0; columnIndex < nC; columnIndex++) {
+    		//for each piece in that column with at least three pieces above it
+    		int maxHeight = getColumnChipCount(columnIndex);
+    		for (int height = 0; maxHeight - height >= 3; height ++) {
+    			if (getColor(columnIndex, height, maxHeight) == getColor(columnIndex, height + 1, maxHeight) & 
+    					getColor(columnIndex, height, maxHeight) == getColor(columnIndex, height + 2, maxHeight)  &
+    					getColor(columnIndex, height, maxHeight) == getColor(columnIndex, height + 3, maxHeight)) {
+    				return getColor(columnIndex, height, maxHeight);
+    			}
+    		}
+    	}
+    	//check horizontals
+    	for (int rowIndex =0; rowIndex < nR; rowIndex++) {
+    		for( int columnIndex = 0; columnIndex + 3 < nC; columnIndex++ ) {
+    			if (getColor(columnIndex, rowIndex, getColumnChipCount(columnIndex)) != 0) {
+    				int maxHeight = getColumnChipCount(columnIndex);
+    				if (getColor(columnIndex, rowIndex, maxHeight) == getColor(columnIndex + 1, rowIndex, maxHeight) & 
+        					getColor(columnIndex, rowIndex, maxHeight) == getColor(columnIndex + 2, rowIndex, maxHeight)  &
+        					getColor(columnIndex, rowIndex, maxHeight) == getColor(columnIndex + 3, rowIndex, maxHeight)) {
+        				return getColor(columnIndex, rowIndex, maxHeight);
+        			}
+    			}
+    		}
+    	}
+    	//check diagonals
+    	if (getColor(0,0,getColumnChipCount(0)) == getColor(1, 1, getColumnChipCount(1)) &
+    			getColor(0, 0, getColumnChipCount(0)) == getColor(2, 2, getColumnChipCount(2))  &
+				getColor(0, 0, getColumnChipCount(0)) == getColor(3, 3, getColumnChipCount(3))) {
+    		return getColor(0,0,getColumnChipCount(0));
+    	}
+    	if (getColor(0,3,getColumnChipCount(0)) == getColor(1, 2, getColumnChipCount(1)) &
+    			getColor(0, 3, getColumnChipCount(0)) == getColor(2, 1, getColumnChipCount(2))  &
+				getColor(0, 3, getColumnChipCount(0)) == getColor(3, 0, getColumnChipCount(3))) {
+    		return getColor(0,3,getColumnChipCount(0));
+    	}
+    	if ( ((position << 43) >> 43) == 2097152) {
+    		return 0;
+    	} else {
+    		return -1;
+    	}
     }
 
     @Override
@@ -138,5 +201,14 @@ public class Connect4Position implements InterfacePosition {
         // Not used yet
         return 0/0;
     }
-
+    
+    public void printBoard() {
+    	for (int i = nR - 1; i >= 0; i--) {
+    		for (int j = 0; j < nC; i++) {
+    			System.out.print(getColor(j, i, getColumnChipCount(j)));
+    		}
+    		System.out.println();
+    	}
+    	System.out.println("current player:" + Integer.toString(getPlayer()));
+    }
 }

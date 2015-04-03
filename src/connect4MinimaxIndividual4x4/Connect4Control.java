@@ -20,6 +20,7 @@ public class Connect4Control implements InterfaceControl, ThreadCompleteListener
 
     @Override
     public void onMove() { // Control is notified of a player (real or automated) move
+    	position.printBoard();
         if ( currentPlayer == 1 ) {
             if (player1Strategy != null && !isBlockManualMove()) { // isStrategy and game not over
                 isMoveBlockedByCalculation = true;
