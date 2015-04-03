@@ -9,7 +9,7 @@ public class Connect4Strategy implements InterfaceStrategy {
         int opponent = 3-player; // There are two players, 1 and 2.
         for ( InterfaceIterator iPos = new Connect4Iterator(4, 4); iPos.isInBounds(); iPos.increment() ) {
             InterfacePosition posNew = new Connect4Position(position);
-            if (posNew.getColor(iPos) == 0) { // This is a free spot
+            if (posNew.getColor(iPos) == 0 & ((iPos.nR()-iPos.iR()-1) == ((Connect4Position) posNew).getColumnChipCount(iPos))) { // This is a free spot
                 posNew.setColor(iPos, player);
                 int isWin = posNew.isWinner();
                 float score;

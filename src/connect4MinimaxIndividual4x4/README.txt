@@ -1,4 +1,2 @@
-The code doesn't work to the point that I can't debug it. 
-I try putting breakpoints in at the onMove method of the controller, 
-but it never gets there. It just freezes for me. I have implemented 
-everything you have asked, I just don't know if it works. :( 
+Wait a bit when you switch it to a strategy. It took around 1 min 5 sec
+ seconds to run after I swiched player 1 to strategy 1. It works though!
