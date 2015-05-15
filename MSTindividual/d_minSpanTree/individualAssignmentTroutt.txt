@@ -1,0 +1,38 @@
+This is the individual minimum spanning tree assignment for Calvin Troutt. 
+
+Question 1: 
+a.) If reset==true and nRandomVertices==100, 
+    i) What is the new space complexity of vertex storage?
+    ii) What is the new space complexity of edge storage?
+    iii) What is the time complexity of the Java method?
+    
+    answers: 
+	i.)		n = 100
+	ii.)	(n(n-1))/2 = 4950
+	iii.)	O((n(n-1))/2 + n) = O(n^2)
+
+b.) If reset==false and nRandomVertices==100 and nV0 (initial gmi.getVertices().size()) = 100, 
+    i) What is the new space complexity of vertex storage?
+    ii) What is the new space complexity of edge storage?
+    iii) What is the time complexity of the Java method?
+    
+    answers:
+	i.)		n = 100
+	ii.)	( ((n+100)(n+99))/2 ) - ( ((100)(99))/2 ) = 14950
+	iii.)	O( ( ((n+100)(n+99))/2 ) - ( ((100)(99))/2 ) + n ) = O(n^2)
+
+c.) What is the relationship between number of vertices (nV) and number of edges (nE)?
+	nE = ((nV)(nV-1)/2)
+
+d.) What is the time complexity of the method in terms of nV0 and nRandomVertices (n)
+	( ((n+nV0)(n+nV0-1))/2 ) - ( ((nV0)(nV0-1))/2 ) + n
+	
+2) In d_minSpanTree.controller.operation.algorithm.MinimumSpanningTree.execute():
+  a) What is the expected time complexity of QuickSort?
+		O(nlogn)
+  b) What is the worst case time complexity of QuickSort?
+		O(n^2)
+  c) What is the expected time complexity of execute()?
+		O(n^2)
+  b) What is time complexity of Kruskal's algorithm that is efficiently implemented? (You can look this one up, just site the source, e.g., Wikipedia)
+		At most O(ElogV) where E = # of edges. (wiki)

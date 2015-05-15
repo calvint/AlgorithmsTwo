@@ -66,9 +66,9 @@ public class Connect4StrategyB implements InterfaceStrategy {
                 }
                 long timeNow = System.nanoTime();
                 if ( context.getMaxSearchTimeForThisPos() - timeNow <= 0 ) {
-                    //System.out.println("Connect4StrategyB:getBestMove(): ran out of time: maxTime("
-                    //        +context.getMaxSearchTimeForThisPos()+") :time("
-                    //        +timeNow+"): recDepth("+context.getCurrentDepth()+")");
+                    System.out.println("Connect4StrategyB:getBestMove(): ran out of time: maxTime("
+                            +context.getMaxSearchTimeForThisPos()+") :time("
+                            +timeNow+"): recDepth("+context.getCurrentDepth()+")");
                     break; // Need to make any move now
                 }
             }
@@ -77,7 +77,6 @@ public class Connect4StrategyB implements InterfaceStrategy {
             //    checkedPositions.put(position.getRawPosition(),searchResult.getClassStateCompacted());
 
         }
-        
         return searchResult;
     }
 
