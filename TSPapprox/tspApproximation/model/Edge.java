@@ -114,4 +114,22 @@ public class Edge extends Object implements Comparable<Edge>{
 			}
 		}
 	}
+	
+	public Vertex getOtherVertex(Vertex oneVertex) {
+		if (!this.getStart().equals(oneVertex)) {
+			return this.getStart();
+		} else {
+			return this.getEnd();
+		}
+	}
+	
+	public Double getClockwiseAngleFromEdge(Edge startingEdge, Vertex sharedPoint) {
+		Double x1 = startingEdge.getOtherVertex(sharedPoint).getX() - sharedPoint.getX();
+		Double y1 = startingEdge.getOtherVertex(sharedPoint).getY() - sharedPoint.getY();
+		Double x2 = this.getOtherVertex(sharedPoint).getX() - sharedPoint.getX();
+		Double y2 = this.getOtherVertex(sharedPoint).getY() - sharedPoint.getY();
+		Double dot = x1*x2 + y1*y2;      // dot product
+		Double det = x1*y2 - y1*x2;      // determinant
+		return Math.atan2(det, dot);  // atan2(y, x) or atan2(sin, cos)
+	}
 }

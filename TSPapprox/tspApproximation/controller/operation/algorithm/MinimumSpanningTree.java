@@ -17,12 +17,8 @@ public class MinimumSpanningTree implements GraphAlgorithm {
 	@Override
     public void execute(GraphModelInterface gmi) {
 		forest = new ArrayList<ArrayList<Vertex>>();
-//		for (Edge e : gmi.getEdges()) {
-//			e.setOpacity(.05);
-//		}
 		ArrayList<Edge> finalTree = new ArrayList<Edge>();
 		vertexToTree = new HashMap<>();
-	//	System.out.println("Edges (after edge creation): " + gmi.getEdges().size());
 		ArrayList<Object> edges = new ArrayList<Object>();
 		edges.addAll(gmi.getEdges());
 
@@ -33,11 +29,7 @@ public class MinimumSpanningTree implements GraphAlgorithm {
 			forest.add(tree);
 		}
 
-//		for (Edge e : gmi.getEdges()) {
-//		    e.setOpacity(0.1);
-//		}
-
-        // Kruskal's algorithm O(f(nE,nV)???) in an efficient time complexity implementation.
+        // Kruskal's algorithm
         long startTime = System.nanoTime(); // Start the total timing
         // Quicksort of the entire edge array puts us at O(???) time complexity
 
@@ -63,14 +55,14 @@ public class MinimumSpanningTree implements GraphAlgorithm {
         long endTime  = System.nanoTime(); // Finish the total timing
         float timeElapsed = (endTime-startTime)/1000000.0f; // milliseconds
         System.out.println("MST (Kruskal) time O(f(nE,nV)???):" + timeElapsed);
-
-		for (Edge e : finalTree) {
-			e.setOpacity(1);
-		}
-
-		gmi.getDisplayEdges().clear();
+        
+        //empty the edges and add only the edges of the minimum spanning tree
+		gmi.getEdges().clear();
+		gmi.getEdges().addAll(finalTree);
+		//not displaying here since there is more to come
+		//gmi.getDisplayEdges().clear();
         //gmi.getDisplayEdges().addAll(finalTree); // Only adding the MST edges for display
-        gmi.getDisplayEdges().addAll(gmi.getEdges()); // Adding all edges for display (Use this only if Delaunay)
+        //gmi.getDisplayEdges().addAll(gmi.getEdges()); // Adding all edges for display (Use this only if Delaunay)
 	}
 
 	private ArrayList<Vertex> findTreeWithMap(Vertex vert) {

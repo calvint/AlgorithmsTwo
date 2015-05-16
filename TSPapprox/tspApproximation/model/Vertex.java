@@ -64,5 +64,13 @@ public class Vertex implements Comparable<Vertex>{
 			}
 		}
 	}
+	
+	public boolean equals(Vertex other) {
+		if (this.getX() == other.getX() && this.getY() == other.getY()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

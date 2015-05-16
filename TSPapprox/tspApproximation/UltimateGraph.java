@@ -9,6 +9,7 @@ import tspApproximation.controller.operation.AddGraphAlgorithm;
 import tspApproximation.controller.operation.algorithm.DelaunayTriangulation;
 import tspApproximation.controller.operation.algorithm.MinimumSpanningTree;
 import tspApproximation.controller.operation.algorithm.WeightByDistance;
+import tspApproximation.controller.operation.algorithm.TSPApproximation;
 //import tspApproximation.controller.operation.algorithm.WeightByDistance;
 import tspApproximation.model.GraphModel;
 import tspApproximation.model.GraphModelInterface;
@@ -28,5 +29,6 @@ public class UltimateGraph extends Application {
         controller.getInvoker().doOperation(new AddGraphAlgorithm(new DelaunayTriangulation()));
         controller.getInvoker().doOperation(new AddGraphAlgorithm(new WeightByDistance()));
 		controller.getInvoker().doOperation(new AddGraphAlgorithm(new MinimumSpanningTree()));
+		controller.getInvoker().doOperation(new AddGraphAlgorithm(new TSPApproximation()));
 	}
 }
